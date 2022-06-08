@@ -31,16 +31,8 @@ public class BankAccount {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAcctId() {
         return acctId;
-    }
-
-    public void setAcctId(String acctId) {
-        this.acctId = acctId;
     }
 
     public float getBalance() {
@@ -83,27 +75,33 @@ public class BankAccount {
         this.accountClosingDate = accountClosingDate;
     }
 
-    protected float withdraw(String withdrawalAmt){
+    public float withdraw(String withdrawalAmt){
         Float withdraw = null;
         try {
                 withdraw = Float.parseFloat(withdrawalAmt);
                 if(withdraw.floatValue() <= 0){
                     throw new IllegalArgumentException("Amount cannot be negative or 0");
                 }
-                if (this.isClosed){
+                if(this.isClosed){
                     throw new IllegalArgumentException("Invalid account");
                 }
 
-                this.balance -= withdraw.floatValue();
-                
-                StringBuilder txnStrbld = new StringBuilder();
-                txnStrbld.append("Withdraw $");
-                txnStrbld.append(withdraw.floatValue());
-                txnStrbld.append(" at ");
-                txnStrbld.append(LocalDateTime.now());
+                if(withdraw.floatValue() <= this.balance){
+                    this.balance -= withdraw.floatValue();
+                    
+                    StringBuilder txnStrbld = new StringBuilder();
+                    txnStrbld.append("Withdrew $");
+                    txnStrbld.append(withdraw.floatValue());
+                    txnStrbld.append(" at ");
+                    txnStrbld.append(LocalDateTime.now());
 
-                System.out.println(txnStrbld.toString());
-                transaction.add(txnStrbld.toString());
+                    System.out.println(txnStrbld.toString());
+                    transaction.add(txnStrbld.toString());
+                }
+                else
+                    throw new IllegalArgumentException("Insufficient Balance");
+
+
         } catch (NumberFormatException e) {
             System.err.print(e);
             throw new IllegalArgumentException("Invalid withdraw amount");
@@ -112,7 +110,7 @@ public class BankAccount {
         return withdraw.floatValue();
     }
 
-    protected void deposit (String depositAmt){
+    public void deposit (String depositAmt){
         try {
                 Float deposit = Float.parseFloat(depositAmt);
                 if(deposit.floatValue() <= 0){
@@ -125,7 +123,7 @@ public class BankAccount {
                 this.balance += deposit.floatValue();
 
                 StringBuilder txnStrbld = new StringBuilder();
-                txnStrbld.append("Deposit $");
+                txnStrbld.append("Deposited $");
                 txnStrbld.append(deposit.floatValue());
                 txnStrbld.append(" at ");
                 txnStrbld.append(LocalDateTime.now());

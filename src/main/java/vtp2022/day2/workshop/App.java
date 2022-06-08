@@ -8,6 +8,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        System.out.println( "My ATM Machine - BangBank" );
+        BankAccount bankAcc = new BankAccount ("My Account");
+        bankAcc.deposit("3");
+        System.out.println("New Balance: "+ bankAcc.getBalance());
     }
 }
