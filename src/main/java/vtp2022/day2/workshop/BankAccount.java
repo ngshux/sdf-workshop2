@@ -19,6 +19,7 @@ public class BankAccount {
 
     public BankAccount(String name){
         this.name = name;
+        this.balance = 0;
     }
 
     public BankAccount(String name, float initialBal){
